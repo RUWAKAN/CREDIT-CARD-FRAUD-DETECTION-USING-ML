@@ -1,90 +1,157 @@
-# CREDIT-CARD-FRAUD-DETECTION-USING-ML
+# 💳 Credit Card Fraud Detection using Machine Learning
 
-💳 Credit Card Fraud Detection using Machine Learning
-Author: Ashish Kumar
-Project Type: Academic / ML Application
-Technologies Used: Python, Scikit-learn, Pandas, Matplotlib, Seaborn
+A machine learning project that detects **fraudulent credit card transactions** from a highly imbalanced real-world dataset. Built with Python in a Jupyter Notebook, it trains and compares multiple classifiers and evaluates them using industry-standard fraud detection metrics.
 
+---
 
+## ✨ Features
 
-🔍 Overview
-This project aims to detect fraudulent credit card transactions using machine learning algorithms. With imbalanced data being a key challenge, the solution focuses on techniques to handle skewed datasets and improve the detection of rare fraud cases.
+- 🔍 Detects fraudulent transactions from 284,807 real credit card records
+- ⚖️ Handles severe class imbalance using **undersampling** techniques
+- 📊 Full **Exploratory Data Analysis (EDA)** with transaction pattern visualizations
+- 🧠 Trains and compares three ML classifiers — Logistic Regression, Decision Tree, and Random Forest
+- 📈 Evaluates models using Confusion Matrix, Precision, Recall, F1 Score, and ROC-AUC Curve
+- 💾 Pre-trained model saved as `credit_card_model.pkl` for direct reuse
 
-The system uses historical transaction data to train classifiers and identify patterns that suggest fraudulent behavior.
+---
 
+## 🛠️ Tech Stack
 
+| Component | Technology |
+|---|---|
+| Language | Python 3 |
+| Notebook | Jupyter Notebook |
+| ML Library | Scikit-learn |
+| Data Handling | Pandas, NumPy |
+| Visualization | Matplotlib, Seaborn |
+| Model Saving | Pickle (`.pkl`) |
 
-🚀 Features
-⚖️ Imbalanced Data Handling: Utilizes undersampling techniques.
+---
 
-📊 Exploratory Data Analysis (EDA): Insightful visualizations for understanding transaction patterns.
+## 🧪 Dataset
 
+- **Source:** [Kaggle — Credit Card Fraud Detection](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
+- **Origin:** Real transactions by European cardholders, September 2013
+- **Size:** 284,807 transactions — only **492 are fraud (0.17%)**
+- **Features:** 28 PCA-anonymized features (`V1`–`V28`) + `Time`, `Amount`, and `Class`
+  - `Class = 0` → Legitimate
+  - `Class = 1` → Fraudulent
 
+> ⚠️ The dataset is highly imbalanced. Undersampling is applied to balance the classes before training.
 
-🧠 ML Algorithms:
+---
 
-Logistic Regression
+## ⚙️ How It Works
 
-Decision Tree
+```
+Raw Transaction Data (284,807 records)
+          ↓
+Exploratory Data Analysis (EDA)
+(distribution plots, correlation heatmap, fraud vs. legit analysis)
+          ↓
+Handle Class Imbalance → Undersampling
+          ↓
+Feature Scaling (StandardScaler on Amount & Time)
+          ↓
+  ┌─────────────────────────────────┐
+  │  Logistic Regression            │
+  │  Decision Tree Classifier       │
+  │  Random Forest Classifier ✅    │  ← Best Model
+  └─────────────────────────────────┘
+          ↓
+Evaluation: Confusion Matrix | Precision | Recall | F1 | ROC-AUC
+```
 
-Random Forest
+---
 
+## 📊 Model Performance
 
+| Model | ROC-AUC Score |
+|---|---|
+| Logistic Regression | ~0.97 |
+| Decision Tree | ~0.91 |
+| **Random Forest** | **~0.93** |
 
-📈 Model Evaluation Metrics:
+> Best overall balance of precision and recall achieved by **Random Forest Classifier**.
 
-Confusion Matrix
+---
 
-Accuracy, Precision, Recall, F1 Score
+## 📂 Project Structure
 
-ROC-AUC Curve
+```
+📦 CREDIT-CARD-FRAUD-DETECTION-USING-ML
+├── CREADIT CARD FRAUD DETECTION.ipynb    # Main notebook
+├── credit_card_model.pkl                 # Pre-trained Random Forest model
+└── README.md
+```
 
+> 📌 The dataset (`creditcard.csv`) is not included due to size. Download it from [Kaggle](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud) and place it in the root folder.
 
-jupyter notebook "Credit Card Fraud Detection (1).ipynb"
+---
 
+## 🚀 Getting Started
 
-📁 Dataset
+### Prerequisites
 
-Source: Kaggle — Credit Card Fraud Detection Dataset
+```bash
+pip install numpy pandas scikit-learn matplotlib seaborn jupyter
+```
 
-Content: Transactions made by European cardholders in September 2013.
+### Run the Notebook
 
-Size: 284,807 transactions with 492 frauds (highly imbalanced).
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/RUWAKAN/CREDIT-CARD-FRAUD-DETECTION-USING-ML.git
+   cd CREDIT-CARD-FRAUD-DETECTION-USING-ML
+   ```
 
-Features: PCA-transformed anonymized features + Time, Amount, and Class (0 = non-fraud, 1 = fraud)
+2. **Download the dataset** from [Kaggle](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud) and place `creditcard.csv` in the root folder.
 
+3. **Launch Jupyter Notebook**
+   ```bash
+   jupyter notebook
+   ```
 
+4. **Open** `CREADIT CARD FRAUD DETECTION.ipynb` and run all cells.
 
-📉 Model Performance
-Best performing model: Random Forest Classifier
+---
 
-ROC-AUC Score: ~0.93
+## 🔁 Using the Pre-trained Model
 
-Metrics visualized via ROC Curve and confusion matrices.
+```python
+import pickle
+import numpy as np
 
+# Load the model
+with open('credit_card_model.pkl', 'rb') as f:
+    model = pickle.load(f)
 
-📌 Future Work
-Incorporate oversampling (SMOTE) or ensemble methods (XGBoost, LightGBM)
+# Example transaction (28 PCA features + Time + Amount)
+transaction = np.array([[0.0, -1.35, 1.19, ..., 0.01, 149.62]])
 
-Real-time fraud detection system via API
+prediction = model.predict(transaction)
+print("FRAUD" if prediction[0] == 1 else "LEGITIMATE")
+```
 
-Model deployment using Flask or Streamlit
+---
 
+## 🗺️ Roadmap
 
-📁 Project Structure
+- [ ] Add SMOTE oversampling for better fraud recall
+- [ ] Benchmark XGBoost and LightGBM models
+- [ ] Build a real-time fraud detection API with Flask
+- [ ] Deploy as a web app using Streamlit
+- [ ] Add SHAP explainability for model transparency
 
-📦 credit-card-fraud-detection
-├── Credit Card Fraud Detection (1).ipynb
-├── requirements.txt
-├── README.md
-└── assets/ (e.g. ROC curves, confusion matrix plots)
+---
 
+## 👨‍💻 Author
 
+**Ashish Kumar (RUWAKAN)**
+BCA (2022–2025) — Galgotias University
 
-🧑‍💻 Author
-Ashish Kumar
-BCA (2022-2025)
-Galgotias University
+---
 
-📜 License
-This project is licensed under the MIT License. Free to use and modify for learning and research purposes.
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE). Free to use and modify for learning and research purposes.
